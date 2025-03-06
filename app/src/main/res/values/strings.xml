@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Ecommerce</string>
+    <string name="intro_title">
+        Welcome to
+        <font color="#39c7a5">Digital Store </font> \n
+        a
+        <font color="#39c7a5">Geteway</font> to the Latest Tech
+    </string>
+</resources>
