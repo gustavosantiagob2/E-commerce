@@ -88,6 +88,8 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidx.constraintlayout.compose)
 
+    implementation ("androidx.compose.foundation:foundation:1.5.0")
+
     implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
     implementation("androidx.compose.ui:ui-tooling:1.3.3")
 
@@ -97,6 +99,8 @@ dependencies {
     //Ajustar uma versão descente para o accompanist-pager
     implementation("com.google.accompanist:accompanist-pager:0.36.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
+
+    implementation("androidx.navigation:navigation-compose:2.8.8")
 
 
 }

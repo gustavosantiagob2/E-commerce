@@ -1,4 +1,4 @@
-package com.example.ecommerce
+package com.example.ecommerce.activity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ecommerce.R
 import com.example.ecommerce.R.string.intro_sub_title
 import com.example.ecommerce.R.string.intro_title
 import com.example.ecommerce.R.string.letgo
