@@ -1,5 +1,6 @@
 package com.example.ecommerce.activity
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,13 +8,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,12 +30,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.ecommerce.R
 import com.example.ecommerce.model.ItemsModel
+import com.google.gson.Gson
 
 @Composable
-fun ListItems(items: List<ItemsModel>) {
+fun ListItems(items: List<ItemsModel>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
@@ -49,7 +55,7 @@ fun ListItems(items: List<ItemsModel>) {
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                RecommendedItem(items, row)
+                RecommendedItem(items, row, navController)
             }
         }
 
@@ -57,11 +63,12 @@ fun ListItems(items: List<ItemsModel>) {
 }
 
 @Composable
-fun RecommendedItem(items: List<ItemsModel>, pos: Int) {
+fun RecommendedItem(items: List<ItemsModel>, pos: Int, navController: NavController) {
     Column(
         modifier = Modifier
             .padding(8.dp)
             .height(255.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         AsyncImage(
             model = items[pos].picUrl.firstOrNull(),
@@ -71,7 +78,9 @@ fun RecommendedItem(items: List<ItemsModel>, pos: Int) {
                 .background(Color.LightGray, shape = RoundedCornerShape(10.dp))
                 .height(175.dp)
                 .padding(8.dp)
-                .clickable { },
+                .clickable {
+                    navController.navigate("detail/${Uri.encode(Gson().toJson(items[pos]))}")
+                },
             contentScale = ContentScale.Inside
         )
         Text(
@@ -109,5 +118,31 @@ fun RecommendedItem(items: List<ItemsModel>, pos: Int) {
                 fontSize = 15.sp,
             )
         }
+    }
+}
+
+@Composable
+fun ListItemsFullSize(items: List<ItemsModel>, navController: NavController) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+
+        items(
+            items.size
+        ) { row ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                RecommendedItem(items, row, navController)
+            }
+        }
+
     }
 }

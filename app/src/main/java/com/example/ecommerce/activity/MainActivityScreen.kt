@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import com.example.ecommerce.R
@@ -60,9 +61,12 @@ import com.example.ecommerce.model.CategoryModel
 import com.example.ecommerce.model.ItemsModel
 import com.example.ecommerce.model.SliderModel
 import com.example.ecommerce.viewmodel.MainViewModel
+import kotlinx.coroutines.delay
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
-fun MainActivityScreen(onCardClick: () -> Unit) {
+fun MainActivityScreen( navController: NavController,onCardClick: () -> Unit) {
     val viewModel = MainViewModel()
     val banners = remember { mutableStateListOf<SliderModel>() }
     val categories = remember { mutableStateListOf<CategoryModel>() }
@@ -84,7 +88,7 @@ fun MainActivityScreen(onCardClick: () -> Unit) {
 //    //Categories
     LaunchedEffect(Unit) {
         viewModel.loadCategory()
-        viewModel.categories.observeForever() {
+        viewModel.categories.observeForever {
             categories.clear()
             categories.addAll(it)
             showCategoryLoading = false
@@ -186,7 +190,7 @@ fun MainActivityScreen(onCardClick: () -> Unit) {
                         CircularProgressIndicator()
                     }
                 } else {
-                    CategoryList(categories)
+                    CategoryList(categories, navController = navController)
                 }
             }
             item {
@@ -204,17 +208,17 @@ fun MainActivityScreen(onCardClick: () -> Unit) {
                         CircularProgressIndicator()
                     }
                 } else {
-                    ListItems(recommended)
+                    ListItems(recommended, navController)
                 }
             }
             item {
-                Spacer(modifier = Modifier .height(100.dp))
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
         BottomMenu(
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(bottomMenu){
+                .constrainAs(bottomMenu) {
                     bottom.linkTo(parent.bottom)
                 },
             onItemClick = onCardClick
@@ -224,8 +228,9 @@ fun MainActivityScreen(onCardClick: () -> Unit) {
 
 @SuppressLint("AutoboxingStateCreation")
 @Composable
-fun CategoryList(categories: List<CategoryModel>) {
+fun CategoryList(categories: List<CategoryModel>, navController: NavController) {
     var selectedIndex by remember { mutableStateOf(-1) }
+    var selectedCategory by remember { mutableStateOf<CategoryModel?>(null) }
 
     LazyRow(
         modifier = Modifier
@@ -237,10 +242,30 @@ fun CategoryList(categories: List<CategoryModel>) {
             CategoryItem(
                 categories[index],
                 isSelected = selectedIndex == index,
-                onItemClicked = { selectedIndex = index }
+                onItemClicked = {
+                    selectedIndex = index
+                    selectedCategory = categories[index]
+
+                }
             )
         }
     }
+
+    LaunchedEffect(selectedIndex) {
+        if (selectedIndex != -1 ) {
+            delay(1000)
+            val encodedTitle = URLEncoder.encode(selectedCategory?.title, StandardCharsets.UTF_8.toString())
+            navController.navigate("list/${selectedCategory?.id}/$encodedTitle")
+
+        }
+    }
+}
+
+
+@Composable
+fun Nav(selectedIndex: Int, navController: NavController, category: CategoryModel){
+    // LaunchedEffect fora do LazyRow para evitar que seja chamado em cada item
+
 }
 
 @Composable
@@ -400,10 +425,8 @@ fun SectionTitle(title: String, actionText: String) {
 }
 
 
-
-
 @Preview
 @Composable
 private fun MainActivityScreenPreview() {
-    MainActivityScreen{}
+//    MainActivityScreen {}
 }
