@@ -105,5 +105,5 @@ fun IntroScreen(
 @Preview(showBackground = true)
 @Composable
 private fun IntroScreenPreview() {
-    IntroScreen(){}
+    IntroScreen{}
 }

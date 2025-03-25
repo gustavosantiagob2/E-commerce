@@ -1,24 +1,22 @@
 package com.example.ecommerce.activity
 
+//noinspection UsingMaterialAndMaterial3Libraries
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,15 +32,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil3.compose.rememberAsyncImagePainter
 import com.example.ecommerce.R
+import com.example.ecommerce.compenents.ImageThumbnail
+import com.example.ecommerce.compenents.ModelSelector
+import com.example.ecommerce.compenents.RatingBar
 import com.example.ecommerce.model.ItemsModel
 
+@SuppressLint("AutoboxingStateCreation")
 @Composable
 fun DetailScreen(
     item: ItemsModel,
@@ -135,12 +136,12 @@ fun DetailScreen(
             )
         }
         RatingBar(rating = item.rating)
-
         ModelSelector(
             models = item.model,
             selectedModelIndex = selectedModelIndex,
             onModelSelected = {selectedModelIndex = it}
         )
+        Spacer(modifier = Modifier.height(80.dp))
         Text(
             text = item.description,
             fontSize = 14.sp,
@@ -156,7 +157,7 @@ fun DetailScreen(
             Button(
                 onClick = onAddToCartClick,
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.purple_200)),
+                colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.purple_500)),
                 modifier = Modifier
                     .weight(1F)
                     .padding(end = 8.dp)
@@ -182,125 +183,8 @@ fun DetailScreen(
     }
 }
 
+@Preview(showSystemUi = true)
 @Composable
-fun RatingBar(rating: Double) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(top = 16.dp)
-    ) {
-        Text(
-            text = "Select Model",
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .weight(1F)
-        )
-        Image(
-            painter = painterResource(R.drawable.star),
-            contentDescription = "star icon",
-            modifier = Modifier
-                .padding(end = 8.dp)
-        )
-        Text(
-            text = "$rating Rating",
-            style = MaterialTheme.typography.body2
-        )
-
-    }
-}
-
-@Composable
-fun ModelSelector(
-    models: List<String>,
-    selectedModelIndex: Int,
-    onModelSelected: (Int) -> Unit
-) {
-    LazyRow(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-    ) {
-        itemsIndexed(models){index, model ->
-            Box(
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .height(48.dp)
-                    .then(
-                        if(index == selectedModelIndex){
-                            Modifier
-                                .border(1.dp, colorResource(R.color.purple_500), RoundedCornerShape(10.dp))
-                        }else{
-                            Modifier
-                        }
-                    )
-                    .background(
-                        if(index == selectedModelIndex) colorResource(R.color.purple_500) else Color.LightGray,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clickable { onModelSelected(index) }
-                    .padding(horizontal = 16.dp)
-            ){
-                Text(
-                    text = model,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    color = if(index == selectedModelIndex) colorResource(R.color.purple_500) else Color.Black,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ImageThumbnail(
-    imageUrl: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val backColor = if(isSelected) colorResource(R.color.purple_500) else Color.LightGray
-
-    Box(
-        modifier = Modifier
-            .padding(4.dp)
-            .size(55.dp)
-            .then(
-                if (isSelected) {
-                    Modifier.border(
-                        1.dp,
-                        colorResource(R.color.purple_700),
-                        RoundedCornerShape(10.dp)
-                    )
-                } else {
-                    Modifier
-                }
-            )
-            .background(backColor, shape = RoundedCornerShape(10.dp))
-            .clickable(onClick = onClick)
-            .padding(4.dp)
-    ){
-        Image(
-            painter = rememberAsyncImagePainter(model = imageUrl),
-            contentDescription = "Product Image",
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(4.dp)
-        )
-    }
+private fun PreviewDetailScreen() {
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

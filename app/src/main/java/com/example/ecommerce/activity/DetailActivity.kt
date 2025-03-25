@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.ecommerce.model.ItemsModel
+import com.example.ecommerce.route.Screen
 
 @Composable
 fun DetailActivity(navController: NavController, item: ItemsModel) {
@@ -16,10 +17,12 @@ fun DetailActivity(navController: NavController, item: ItemsModel) {
         item = item ,
         onBackClick = { navController.popBackStack() },
         onAddToCartClick = {
-            item.numberInCard = 1
+            item.numberInCard
             menagmentCard.insertFood(item)
         },
-        onCartClick = {  }
+        onCartClick = {
+            navController.navigate(Screen.Cart.route)
+        }
     )
 
 }
