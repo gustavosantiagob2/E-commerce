@@ -12,7 +12,6 @@ Este é um aplicativo de e-commerce desenvolvido em **Kotlin** utilizando **Jetp
 - 🎨 **Jetpack Compose**
 - 🏗️ **Arquitetura MVVM**
 - 🔥 **Firebase Firestore** (banco de dados em nuvem)
-- 🔑 **Firebase Authentication** (autenticação de usuários)
 - 📡 **LiveData & ViewModel** (para gerenciamento de estado)
 - ⚡ **Coroutines** (para chamadas assíncronas)
 
