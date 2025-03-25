@@ -43,9 +43,4 @@ EcommerceApp/
 ## 📸 Capturas de Tela
 (Adicione imagens do aplicativo em funcionamento)
 
-## 🤝 Contribuição
-Contribuições são bem-vindas! Fique à vontade para abrir issues e pull requests.
-
-## 📜 Licença
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
